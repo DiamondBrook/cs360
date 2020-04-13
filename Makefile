@@ -5,6 +5,7 @@ EXEC=mftp mftpserve
 all: ${OBJS}
 	$(CC) $(CFLAGS) -o mftp mftp.o
 	${CC} ${CFLAGS} -o mftpserve mftpserve.o
+	rm -f ${OBJS}
 
 mftp.o: mftp.c
 	${CC} ${CFLAGS} -c mftp.c
