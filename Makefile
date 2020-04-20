@@ -13,5 +13,11 @@ mftp.o: mftp.c
 mftpserve.o: mftpserve.c
 	${CC} ${CFLAGS} -c mftpserve.c
 
+server: 
+	./mftpserve
+
+client:
+	./mftp 127.0.0.1
+
 clean:
 	rm -f ${OBJS} ${EXEC}
