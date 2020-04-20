@@ -10,15 +10,12 @@
 
 int main(int argc, char *argv[])
 {
+
     int sockfd = 0, n = 0;
     char recvBuff[1024];
     struct sockaddr_in serv_addr; 
 
-    if(argc != 2)
-    {
-        printf("\n Usage: %s <ip of server> \n",argv[0]);
-        return 1;
-    } 
+    
 
     memset(recvBuff, '0',sizeof(recvBuff));
     if((sockfd = socket(AF_INET, SOCK_STREAM, 0)) < 0)
@@ -34,23 +31,21 @@ int main(int argc, char *argv[])
 
     if(inet_pton(AF_INET, argv[1], &serv_addr.sin_addr)<=0)
     {
-        printf("\n inet_pton error occured\n");
+        printf("\n ERROR %d: inet_pton error occured: <%s>\n", errno, strerror(errno));
         return 1;
     } 
 
-    if( connect(sockfd, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0)
+    if(connect(sockfd, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0)
     {
        printf("\n Error : Connect Failed \n");
        return 1;
     } 
 
-    while ( (n = read(sockfd, recvBuff, sizeof(recvBuff)-1)) > 0)
+    while ((n = read(sockfd, recvBuff, sizeof(recvBuff)-1)) > 0)
     {
-        recvBuff[n] = 0;
-        if(fputs(recvBuff, stdout) == EOF)
-        {
-            printf("\n Error : Fputs error\n");
-        }
+        recvBuff[12] = 0;
+        read(sockfd, recvBuff, 12);
+        printf("%s\n", recvBuff);
     } 
 
     if(n < 0)
